@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Resume Intelligence System</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="app-title">Resume IQ</h1>
+          <p class="tagline">AI-Powered Resume Intelligence</p>
+        </div>
+        
+        <div class="header-center">
+          <div class="template-selector">
+            <label>Template:</label>
+            <select id="templateSelect" class="template-dropdown">
+              <option value="modern">Modern Professional</option>
+              <option value="minimal">Minimal Clean</option>
+              <option value="classic">Classic Elegant</option>
+              <option value="creative">Creative Bold</option>
+              <option value="tech">Tech-Focused</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="icon-btn" id="themeToggle" title="Toggle Dark Mode">🌙</button>
+          <button class="icon-btn" id="analyticsBtn" title="View Analytics">📊</button>
+          <button class="btn btn-primary" id="downloadBtn">⬇ Export</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Left Panel: Content Editor -->
+      <div class="left-panel">
+        <div class="panel-tabs">
+          <button class="panel-tab active" data-panel="content">📝 Content</button>
+          <button class="panel-tab" data-panel="jobmatcher">🎯 Job Matcher</button>
+          <button class="panel-tab" data-panel="insights">💡 Insights</button>
+        </div>
+
+        <!-- Content Panel -->
+        <div class="panel-content active" id="content-panel">
+          <div class="form-header">
+            <h2>Resume Content</h2>
+            <button class="btn-add-content" id="addContentBtn">+ Add Section</button>
+          </div>
+
+          <div class="content-sections">
+            <!-- Personal Info Section -->
+            <div class="section-card" data-section="personalInfo">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">👤</span>
+                  <h3>Personal Information</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="personalInfo" class="section-textarea" placeholder="Name, email, phone, LinkedIn, GitHub, location, etc."></textarea>
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="section-card" data-section="summary">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">📋</span>
+                  <h3>Professional Summary</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="summary" class="section-textarea" placeholder="Brief overview of your professional background, achievements, and career goals (2-3 sentences)"></textarea>
+              </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="section-card" data-section="experience">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">💼</span>
+                  <h3>Professional Experience</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="experience" class="section-textarea" placeholder="Company name, job title, dates, key responsibilities and achievements. Use action verbs (Led, Developed, Managed, etc.)"></textarea>
+              </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="section-card" data-section="education">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">🎓</span>
+                  <h3>Education</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="education" class="section-textarea" placeholder="University, degree, major, graduation date, GPA (if 3.5+), honors, relevant coursework"></textarea>
+              </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="section-card" data-section="skills">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">⚡</span>
+                  <h3>Skills</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="skills" class="section-textarea" placeholder="Programming languages, frameworks, tools, certifications. Comma-separated for best results."></textarea>
+              </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section-card" data-section="projects">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">🚀</span>
+                  <h3>Projects</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="projects" class="section-textarea" placeholder="Project name, technologies used, description, key results, and links (GitHub, demo, etc.)"></textarea>
+              </div>
+            </div>
+
+            <!-- Certifications Section -->
+            <div class="section-card" data-section="certifications">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">🏆</span>
+                  <h3>Certifications & Awards</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="certifications" class="section-textarea" placeholder="Certification name, issuing organization, date obtained. Include relevant industry certifications."></textarea>
+              </div>
+            </div>
+
+            <!-- Languages Section -->
+            <div class="section-card" data-section="languages">
+              <div class="section-header">
+                <div class="section-title-group">
+                  <span class="section-icon">🌐</span>
+                  <h3>Languages</h3>
+                </div>
+                <button class="section-toggle">−</button>
+              </div>
+              <div class="section-content">
+                <textarea id="languages" class="section-textarea" placeholder="Language, proficiency level (Native, Fluent, Intermediate, Basic)"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-generate" id="generateBtn">✨ Generate Resume</button>
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Optimizing your resume...</p>
+          </div>
+        </div>
+
+        <!-- Job Matcher Panel -->
+        <div class="panel-content" id="jobmatcher-panel">
+          <div class="job-matcher-header">
+            <h2>🎯 Job Description Analyzer</h2>
+            <p>Paste a job description to see how well your resume matches</p>
+          </div>
+
+          <div class="matcher-container">
+            <textarea id="jobDescription" class="job-textarea" placeholder="Paste the job description here..."></textarea>
+            <button class="btn btn-analyze" id="analyzeBtn">Analyze Match</button>
+          </div>
+
+          <div class="matcher-results" id="matcherResults" style="display: none;">
+            <div class="match-score">
+              <h3>Match Score</h3>
+              <div class="score-display">
+                <div class="score-circle">
+                  <span id="matchPercentage">0</span>%
+                </div>
+              </div>
+            </div>
+
+            <div class="matcher-stats">
+              <div class="matcher-stat">
+                <h4>Keyword Score</h4>
+                <p id="keywordScore">0%</p>
+              </div>
+              <div class="matcher-stat">
+                <h4>Action Verbs</h4>
+                <p id="actionVerbScore">0</p>
+              </div>
+            </div>
+
+            <div class="match-details">
+              <div class="match-section">
+                <h4>✅ Matched Keywords</h4>
+                <div id="matchedKeywords" class="keywords-list"></div>
+              </div>
+
+              <div class="match-section">
+                <h4>⚠️ Missing Keywords</h4>
+                <div id="missingKeywords" class="keywords-list"></div>
+              </div>
+
+              <div class="match-section">
+                <h4>💡 Suggestions</h4>
+                <div id="matchSuggestions" class="suggestions-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insights Panel -->
+        <div class="panel-content" id="insights-panel">
+          <div class="insights-header">
+            <h2>💡 Resume Insights</h2>
+          </div>
+
+          <div class="insights-container">
+            <div class="insight-card">
+              <h4>📊 ATS Score</h4>
+              <div class="insight-value" id="atsScore">—</div>
+              <p>Applicant Tracking System compatibility</p>
+            </div>
+
+            <div class="insight-card">
+              <h4>📝 Content Length</h4>
+              <div class="insight-value" id="contentLength">—</div>
+              <p>Word count and readability</p>
+            </div>
+
+            <div class="insight-card">
+              <h4>⚡ Keyword Density</h4>
+              <div class="insight-value" id="keywordDensity">—</div>
+              <p>Technical terms and skills</p>
+            </div>
+
+            <div class="insight-card">
+              <h4>✨ Impact Score</h4>
+              <div class="insight-value" id="impactScore">—</div>
+              <p>Use of action verbs and metrics</p>
+            </div>
+          </div>
+
+          <div class="insights-tips">
+            <h4>🎯 Optimization Tips</h4>
+            <ul id="optimizationTips" class="tips-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Live Preview -->
+      <div class="right-panel">
+        <div class="preview-header">
+          <h2>Preview</h2>
+          <div class="preview-controls">
+            <button class="btn-icon" id="copyBtn" title="Copy HTML">📋</button>
+            <button class="btn-icon" id="fullscreenBtn" title="Toggle Fullscreen">⛶</button>
+            <button class="btn-icon" id="printBtn" title="Print">🖨️</button>
+          </div>
+        </div>
+        <div class="preview-container">
+          <div id="resumePreview" class="resume-preview">
+            <p style="text-align: center; color: #999; padding: 40px;">
+              Fill out your information and click "Generate Resume" to see your professional resume here.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Content Modal -->
+    <div class="modal" id="addContentModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Content Section</h2>
+          <button class="modal-close" id="closeModalBtn">✕</button>
+        </div>
+        <div class="content-grid">
+          <button class="content-card" data-section="personalInfo">
+            <span class="icon">👤</span>
+            <h4>Personal Info</h4>
+          </button>
+          <button class="content-card" data-section="summary">
+            <span class="icon">📋</span>
+            <h4>Summary</h4>
+          </button>
+          <button class="content-card" data-section="experience">
+            <span class="icon">💼</span>
+            <h4>Experience</h4>
+          </button>
+          <button class="content-card" data-section="education">
+            <span class="icon">🎓</span>
+            <h4>Education</h4>
+          </button>
+          <button class="content-card" data-section="skills">
+            <span class="icon">⚡</span>
+            <h4>Skills</h4>
+          </button>
+          <button class="content-card" data-section="projects">
+            <span class="icon">🚀</span>
+            <h4>Projects</h4>
+          </button>
+          <button class="content-card" data-section="certifications">
+            <span class="icon">🏆</span>
+            <h4>Certifications</h4>
+          </button>
+          <button class="content-card" data-section="languages">
+            <span class="icon">🌐</span>
+            <h4>Languages</h4>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+      <div class="modal-content modal-export">
+        <div class="modal-header">
+          <h2>Export Resume</h2>
+          <button class="modal-close" id="closeExportBtn">✕</button>
+        </div>
+        <div class="export-options">
+          <button class="export-btn" id="exportPDF">
+            <span class="export-icon">📄</span>
+            <span>PDF</span>
+          </button>
+          <button class="export-btn" id="exportHTML">
+            <span class="export-icon">🌐</span>
+            <span>HTML</span>
+          </button>
+          <button class="export-btn" id="exportJSON">
+            <span class="export-icon">⚙️</span>
+            <span>JSON</span>
+          </button>
+          <button class="export-btn" id="exportDOCX">
+            <span class="export-icon">📋</span>
+            <span>DOCX</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics Modal -->
+    <div class="modal" id="analyticsModal">
+      <div class="modal-content modal-analytics">
+        <div class="modal-header">
+          <h2>📊 Resume Analytics</h2>
+          <button class="modal-close" id="closeAnalyticsBtn">✕</button>
+        </div>
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h4>Total Words</h4>
+            <p id="analyticsWords">0</p>
+          </div>
+          <div class="analytics-card">
+            <h4>Sections Filled</h4>
+            <p id="analyticsSections">0/8</p>
+          </div>
+          <div class="analytics-card">
+            <h4>Action Verbs</h4>
+            <p id="analyticsActionVerbs">0</p>
+          </div>
+          <div class="analytics-card">
+            <h4>Completion %</h4>
+            <p id="analyticsCompletion">0%</p>
+          </div>
+        </div>
+        <div class="analytics-tips">
+          <h4>Performance Metrics</h4>
+          <div id="analyticsMetrics"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -17,6 +17,8 @@ const exportDOCX = document.getElementById('exportDOCX');
 const generateBtn = document.getElementById('generateBtn');
 const themeToggle = document.getElementById('themeToggle');
 const templateSelect = document.getElementById('templateSelect');
+const themeSelect = document.getElementById('themeSelect');
+const fontSizeSelect = document.getElementById('fontSizeSelect');
 const panelTabs = document.querySelectorAll('.panel-tab');
 const panels = document.querySelectorAll('.panel-content');
 const addSectionButtons = document.querySelectorAll('.content-card');
@@ -128,6 +130,19 @@ function loadSavedFields() {
     themeToggle.textContent = '☀️';
   }
 
+  // load site theme (new selector) and font size
+  const siteTheme = localStorage.getItem('site_theme');
+  if (siteTheme && themeSelect) {
+    themeSelect.value = siteTheme;
+    applyTheme(siteTheme);
+  }
+
+  const fontSize = localStorage.getItem('font_size');
+  if (fontSize && fontSizeSelect) {
+    fontSizeSelect.value = fontSize;
+    applyFontSize(fontSize);
+  }
+
   loadSectionOrder();
   loadSectionVisibility();
 }
@@ -135,6 +150,22 @@ function loadSavedFields() {
 function updateTemplateClass(choice) {
   const className = templateClasses[choice] || templateClasses.modern;
   resumePreview.className = `resume-preview ${className}`;
+}
+
+function applyTheme(name) {
+  document.body.classList.remove('theme-dark', 'theme-warm');
+  if (!name || name === 'system') return;
+  if (name === 'dark') document.body.classList.add('theme-dark');
+  if (name === 'warm') document.body.classList.add('theme-warm');
+  localStorage.setItem('site_theme', name);
+}
+
+function applyFontSize(size) {
+  document.body.classList.remove('font-large', 'font-compact');
+  if (!size || size === 'default') return;
+  if (size === 'large') document.body.classList.add('font-large');
+  if (size === 'compact') document.body.classList.add('font-compact');
+  localStorage.setItem('font_size', size);
 }
 
 function buildContactLines(personalInfo) {
@@ -507,6 +538,17 @@ function setSectionVisible(section, visible) {
 
   if (visible) {
     card.classList.remove('collapsed');
+    // play restore animation
+    card.classList.remove('restore');
+    // small timeout to allow reflow
+    requestAnimationFrame(() => {
+      card.classList.add('restore');
+    });
+    card.addEventListener('animationend', function _cleanup() {
+      card.classList.remove('restore');
+      card.removeEventListener('animationend', _cleanup);
+    });
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   saveSectionVisibility();
@@ -698,6 +740,18 @@ templateSelect.addEventListener('change', () => {
   updateTemplateClass(templateSelect.value);
   generateResume();
 });
+
+if (themeSelect) {
+  themeSelect.addEventListener('change', () => {
+    applyTheme(themeSelect.value);
+  });
+}
+
+if (fontSizeSelect) {
+  fontSizeSelect.addEventListener('change', () => {
+    applyFontSize(fontSizeSelect.value);
+  });
+}
 
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');

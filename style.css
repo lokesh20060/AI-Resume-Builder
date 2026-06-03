@@ -6,6 +6,7 @@
 
 :root {
   --primary: #6366f1;
+  --accent-2: #06b6d4;
   --primary-light: #818cf8;
   --primary-dark: #4f46e5;
   --secondary: #ec4899;
@@ -86,6 +87,19 @@ textarea {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 4px;
+}
+
+.app-logo {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent-2));
+  color: white;
+  font-size: 18px;
+  margin-right: 10px;
 }
 
 .tagline {
@@ -683,7 +697,7 @@ textarea {
 
 .resume-container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 30px;
 }
 
@@ -724,6 +738,14 @@ textarea {
   border: 1px solid var(--border);
   padding: 22px;
   color: var(--text-secondary);
+}
+
+.resume-section-title {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 3px solid var(--accent-2);
 }
 
 .resume-section {
@@ -795,10 +817,65 @@ textarea {
   align-items: center;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(99, 102, 241, 0.12);
-  color: var(--primary);
+  background: linear-gradient(90deg, rgba(99,102,241,0.12), rgba(6,182,212,0.08));
+  color: var(--primary-dark);
   font-size: 12px;
   font-weight: 700;
+}
+
+/* Preview strength */
+.resume-strength {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.strength-bar {
+  width: 160px;
+  height: 10px;
+  background: var(--bg-primary);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.strength-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent-2));
+  transition: width 300ms ease;
+}
+.strength-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Hidden sections modal list */
+.hidden-sections {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+.hidden-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hidden-list button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  cursor: pointer;
+}
+.hidden-list button:hover { background: var(--bg-tertiary); }
+
+/* Section header tips */
+.section-tip {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-left: 36px;
+  margin-top: 6px;
 }
 
 /* Template variants */

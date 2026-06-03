@@ -11,6 +11,7 @@
     <div class="header">
       <div class="header-content">
         <div class="header-left">
+          <span class="app-logo">⚡</span>
           <h1 class="app-title">Resume IQ</h1>
           <p class="tagline">AI-Powered Resume Intelligence</p>
         </div>
@@ -274,6 +275,10 @@
             <button class="btn-icon" id="fullscreenBtn" title="Toggle Fullscreen">⛶</button>
             <button class="btn-icon" id="printBtn" title="Print">🖨️</button>
           </div>
+          <div class="resume-strength">
+            <div class="strength-bar" id="resumeStrengthBar"><div class="strength-fill" id="resumeStrengthFill"></div></div>
+            <div class="strength-label" id="resumeStrengthLabel">Completion: 0%</div>
+          </div>
         </div>
         <div class="preview-container">
           <div id="resumePreview" class="resume-preview">
@@ -325,6 +330,10 @@
             <span class="icon">🌐</span>
             <h4>Languages</h4>
           </button>
+        </div>
+        <div class="hidden-sections">
+          <h4>Hidden Sections</h4>
+          <div id="hiddenSectionsList" class="hidden-list"></div>
         </div>
       </div>
     </div>

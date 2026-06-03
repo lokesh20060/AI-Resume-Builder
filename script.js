@@ -73,6 +73,10 @@ function selectPanel(panelId) {
 
 function openModal(modal) {
   modal.classList.add('active');
+  if (modal && modal.id === 'addContentModal') {
+    // render hidden sections list when opening the Add Content modal
+    renderHiddenSections?.();
+  }
 }
 
 function closeModal(modal) {
@@ -352,6 +356,14 @@ function refreshAnalytics() {
   analyticsMetrics.innerHTML = metrics
     .map((metric) => `<div class="analytics-metric"><strong>${metric.title}</strong>${metric.value}<div>${metric.detail}</div></div>`)
     .join('');
+
+  // Update resume strength meter if present
+  const fill = document.getElementById('resumeStrengthFill');
+  const label = document.getElementById('resumeStrengthLabel');
+  if (fill && label) {
+    fill.style.width = `${completed}%`;
+    label.textContent = `Completion: ${completed}%`;
+  }
 }
 
 function buildResumeData() {
@@ -523,6 +535,50 @@ function createSectionDeleteButtons() {
   });
 }
 
+function renderHiddenSections() {
+  const container = document.getElementById('hiddenSectionsList');
+  if (!container) return;
+  const hidden = Array.from(document.querySelectorAll('.section-card.hidden')).map((c) => c.dataset.section);
+  if (hidden.length === 0) {
+    container.innerHTML = '<div class="suggestion-item">No hidden sections</div>';
+    return;
+  }
+  container.innerHTML = '';
+  hidden.forEach((section) => {
+    const btn = document.createElement('button');
+    btn.textContent = `Restore ${section}`;
+    btn.addEventListener('click', () => {
+      setSectionVisible(section, true);
+      renderHiddenSections();
+    });
+    container.appendChild(btn);
+  });
+}
+
+function createSectionTips() {
+  const tips = {
+    personalInfo: 'Include name, title, and contact links (LinkedIn, GitHub).',
+    summary: 'Write 2–3 concise sentences highlighting impact and goals.',
+    experience: 'Use bullets with metrics: improved X by Y%.',
+    education: 'List degree, school, graduation date and honors.',
+    skills: 'Comma-separated key technologies and tools.',
+    projects: 'Name, tech used, your role, and measurable outcome.',
+    certifications: 'Certification name and issuing organization with date.',
+    languages: 'Language and proficiency (Native, Fluent, Intermediate).'
+  };
+
+  document.querySelectorAll('.section-card').forEach((card) => {
+    const section = card.dataset.section;
+    const titleGroup = card.querySelector('.section-title-group');
+    if (!titleGroup) return;
+    if (titleGroup.querySelector('.section-tip')) return;
+    const tip = document.createElement('small');
+    tip.className = 'section-tip';
+    tip.textContent = tips[section] || '';
+    titleGroup.appendChild(tip);
+  });
+}
+
 function handleDragStart(event) {
   event.currentTarget.classList.add('dragging');
   event.dataTransfer.effectAllowed = 'move';
@@ -678,5 +734,6 @@ loadSavedFields();
 initializeSectionCollapse();
 initializeDragAndDrop();
 createSectionDeleteButtons();
+createSectionTips();
 selectPanel('content');
 generateResume();

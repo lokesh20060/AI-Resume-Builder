@@ -53,6 +53,25 @@ body.dark-mode {
   --text-secondary: #6b6b6b;
 }
 
+.theme-high-contrast {
+  --primary: #000000;
+  --accent-2: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #111111;
+  --border: #000000;
+}
+
+.theme-corporate {
+  --primary: #0b5fff;
+  --accent-2: #073b8a;
+  --bg-primary: #f6f9ff;
+  --bg-secondary: #ffffff;
+  --text-primary: #0b1b33;
+  --text-secondary: #41536b;
+}
+
 html,
 body {
   width: 100%;
@@ -908,6 +927,15 @@ textarea {
   cursor: pointer;
 }
 .hidden-list button:hover { background: var(--bg-tertiary); }
+
+/* Micro-interaction for hidden-list buttons */
+.hidden-list button {
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.hidden-list button.pressed {
+  transform: scale(0.96);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+}
 
 /* Section header tips */
 .section-tip {

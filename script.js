@@ -137,6 +137,13 @@ function loadSavedFields() {
     applyTheme(siteTheme);
   }
 
+  // load custom accent
+  const customAccent = localStorage.getItem('custom_accent');
+  if (customAccent) {
+    setAccentColor(customAccent);
+    if (accentPicker) accentPicker.value = customAccent;
+  }
+
   const fontSize = localStorage.getItem('font_size');
   if (fontSize && fontSizeSelect) {
     fontSizeSelect.value = fontSize;
@@ -589,11 +596,62 @@ function renderHiddenSections() {
   hidden.forEach((section) => {
     const btn = document.createElement('button');
     btn.textContent = `Restore ${section}`;
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      // micro interaction
+      btn.classList.add('pressed');
+      setTimeout(() => btn.classList.remove('pressed'), 180);
+      // restore with animation
       setSectionVisible(section, true);
       renderHiddenSections();
     });
     container.appendChild(btn);
+  });
+}
+
+// Accent color picker support
+const accentPicker = document.getElementById('accentPicker');
+const resetAccent = document.getElementById('resetAccent');
+
+function hexToRgb(hex) {
+  const clean = hex.replace('#', '');
+  const bigint = parseInt(clean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return { r, g, b };
+}
+
+function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
+}
+
+function adjustColor(hex, amount) {
+  const { r, g, b } = hexToRgb(hex);
+  const clamp = (v) => Math.max(0, Math.min(255, v));
+  return rgbToHex(clamp(r + amount), clamp(g + amount), clamp(b + amount));
+}
+
+function setAccentColor(hex) {
+  if (!hex) return;
+  document.documentElement.style.setProperty('--primary', hex);
+  // derive accent-2 slightly darker
+  const darker = adjustColor(hex, -30);
+  document.documentElement.style.setProperty('--accent-2', darker);
+  localStorage.setItem('custom_accent', hex);
+}
+
+if (accentPicker) {
+  accentPicker.addEventListener('input', (e) => {
+    setAccentColor(e.target.value);
+  });
+}
+
+if (resetAccent) {
+  resetAccent.addEventListener('click', () => {
+    localStorage.removeItem('custom_accent');
+    document.documentElement.style.removeProperty('--primary');
+    document.documentElement.style.removeProperty('--accent-2');
+    if (accentPicker) accentPicker.value = '#0ea5e9';
   });
 }
 

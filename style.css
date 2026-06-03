@@ -129,17 +129,15 @@ textarea {
   margin-bottom: 4px;
 }
 
-.app-logo {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--accent-2));
-  color: white;
-  font-size: 18px;
-  margin-right: 10px;
+.app-logo-img {
+  width: 120px;
+  max-width: 120px;
+  margin-right: 14px;
+}
+
+.header-left > div {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .tagline {

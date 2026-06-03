@@ -1,0 +1,26 @@
+<svg width="220" height="80" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blueGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B5FFF"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B5FFF"/>
+      <stop offset="100%" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="10" width="46" height="60" rx="10" fill="#E5F0FF" stroke="#0B5FFF" stroke-width="2"/>
+  <rect x="10" y="18" width="30" height="16" rx="4" fill="white"/>
+  <rect x="10" y="38" width="30" height="10" rx="3" fill="white"/>
+  <rect x="10" y="52" width="22" height="8" rx="3" fill="white"/>
+  <circle cx="64" cy="20" r="7" fill="#0B5FFF"/>
+  <circle cx="90" cy="18" r="5" fill="#06B6D4"/>
+  <circle cx="77" cy="40" r="6" fill="#0B5FFF"/>
+  <circle cx="96" cy="55" r="4" fill="#06B6D4"/>
+  <path d="M69 20 H87" stroke="#0B5FFF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M74 24 L82 36" stroke="#0B5FFF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M81 42 L93 52" stroke="#0B5FFF" stroke-width="2" stroke-linecap="round"/>
+  <text x="114" y="30" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="url(#blueGradient)">Resume</text>
+  <text x="114" y="50" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="url(#textGradient)">Intelligence</text>
+  <text x="114" y="70" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Service</text>
+</svg>

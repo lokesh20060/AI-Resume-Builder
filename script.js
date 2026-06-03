@@ -50,6 +50,8 @@ const templateClasses = {
   creative: 'template-creative',
   tech: 'template-tech',
 };
+const sectionVisibilityKey = 'resume_section_visibility';
+let sectionVisibility = {};
 
 const actionVerbs = [
   'led', 'managed', 'created', 'developed', 'executed', 'designed', 'built', 'improved', 'optimized', 'owned', 'accelerated', 'analyzed', 'launched', 'collaborated', 'mentored', 'spearheaded', 'transformed', 'enhanced', 'delivered', 'implemented'
@@ -123,6 +125,7 @@ function loadSavedFields() {
   }
 
   loadSectionOrder();
+  loadSectionVisibility();
 }
 
 function updateTemplateClass(choice) {
@@ -193,7 +196,7 @@ function renderSectionBlock(section, data) {
 function createResumeHTML(data) {
   const contact = buildContactLines(data.personalInfo);
   const summaryValue = data.summary || generateSummary(data);
-  const sectionOrder = getCurrentSectionOrder();
+  const sectionOrder = getVisibleSectionOrder();
   const contentBlocks = sectionOrder
     .filter((section) => section !== 'personalInfo')
     .map((section) => renderSectionBlock(section, { ...data, summary: summaryValue }))
@@ -213,16 +216,8 @@ function createResumeHTML(data) {
 }
 
 function getTextForAnalysis(data) {
-  return [
-    data.personalInfo,
-    data.summary,
-    data.experience,
-    data.education,
-    data.skills,
-    data.projects,
-    data.certifications,
-    data.languages,
-  ]
+  return getVisibleFieldIds()
+    .map((id) => data[id])
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
@@ -320,17 +315,18 @@ function analyzeJobDescription() {
 
 function refreshAnalytics() {
   const data = buildFieldData();
-  const values = Object.values(data).filter(Boolean);
+  const visibleFields = getVisibleFieldIds();
+  const values = visibleFields.map((id) => data[id]).filter(Boolean);
   const wordCount = values.join(' ').split(/\s+/).filter(Boolean).length;
-  const filledSections = fieldIds.filter((id) => data[id]).length;
-  const completed = Math.round((filledSections / fieldIds.length) * 100);
+  const filledSections = visibleFields.filter((id) => data[id]).length;
+  const completed = visibleFields.length ? Math.round((filledSections / visibleFields.length) * 100) : 0;
   const actionCount = countActionVerbs(getTextForAnalysis(data));
   const keywordCount = extractKeywordsFromText(getTextForAnalysis(data)).length;
   const density = wordCount ? Math.min(100, Math.round((keywordCount / wordCount) * 200)) : 0;
   const impact = Math.min(100, actionCount * 9 + Math.round(filledSections * 4));
 
   analyticsWords.textContent = wordCount;
-  analyticsSections.textContent = `${filledSections}/${fieldIds.length}`;
+  analyticsSections.textContent = `${filledSections}/${visibleFields.length}`;
   analyticsActionVerbs.textContent = actionCount;
   analyticsCompletion.textContent = `${completed}%`;
   contentLength.textContent = `${wordCount}`;
@@ -456,6 +452,77 @@ function loadSectionOrder() {
   });
 }
 
+function getVisibleSectionOrder() {
+  return Array.from(document.querySelectorAll('.content-sections .section-card:not(.hidden)')).map((card) => card.dataset.section);
+}
+
+function getVisibleFieldIds() {
+  return fieldIds.filter((id) => {
+    const card = getSectionCard(id);
+    return card && !card.classList.contains('hidden');
+  });
+}
+
+function getDefaultSectionVisibility() {
+  return fieldIds.reduce((visibility, id) => {
+    visibility[id] = true;
+    return visibility;
+  }, {});
+}
+
+function saveSectionVisibility() {
+  localStorage.setItem(sectionVisibilityKey, JSON.stringify(sectionVisibility));
+}
+
+function loadSectionVisibility() {
+  const storedVisibility = localStorage.getItem(sectionVisibilityKey);
+  sectionVisibility = storedVisibility ? JSON.parse(storedVisibility) : getDefaultSectionVisibility();
+
+  Object.entries(sectionVisibility).forEach(([section, visible]) => {
+    const card = getSectionCard(section);
+    if (card) {
+      card.classList.toggle('hidden', !visible);
+    }
+  });
+}
+
+function setSectionVisible(section, visible) {
+  const card = getSectionCard(section);
+  if (!card) return;
+
+  sectionVisibility[section] = visible;
+  card.classList.toggle('hidden', !visible);
+
+  if (visible) {
+    card.classList.remove('collapsed');
+  }
+
+  saveSectionVisibility();
+  saveSectionOrder();
+  generateResume();
+}
+
+function createSectionDeleteButtons() {
+  document.querySelectorAll('.section-card').forEach((card) => {
+    const section = card.dataset.section;
+    const header = card.querySelector('.section-header');
+    if (!header || header.querySelector('.section-delete')) return;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'section-delete';
+    deleteBtn.type = 'button';
+    deleteBtn.title = 'Remove section';
+    deleteBtn.textContent = '✕';
+
+    deleteBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setSectionVisible(section, false);
+    });
+
+    header.appendChild(deleteBtn);
+  });
+}
+
 function handleDragStart(event) {
   event.currentTarget.classList.add('dragging');
   event.dataTransfer.effectAllowed = 'move';
@@ -562,6 +629,9 @@ closeAnalyticsBtn.addEventListener('click', () => closeModal(analyticsModal));
 addSectionButtons.forEach((button) => {
   button.addEventListener('click', () => {
     const section = button.dataset.section;
+    if (getSectionCard(section)?.classList.contains('hidden')) {
+      setSectionVisible(section, true);
+    }
     openSection(section);
     closeModal(addContentModal);
   });
@@ -605,7 +675,8 @@ document.addEventListener('fullscreenchange', () => {
 
 initializeFieldListeners();
 loadSavedFields();
-initializeDragAndDrop();
 initializeSectionCollapse();
+initializeDragAndDrop();
+createSectionDeleteButtons();
 selectPanel('content');
 generateResume();

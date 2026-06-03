@@ -348,6 +348,10 @@ textarea {
   border-style: dashed;
 }
 
+.section-card.hidden {
+  display: none !important;
+}
+
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -374,12 +378,25 @@ textarea {
   color: var(--text-primary);
 }
 
-.section-toggle {
+.section-toggle,
+.section-delete {
   border: none;
   background: none;
   font-size: 22px;
   color: var(--text-secondary);
   cursor: pointer;
+}
+
+.section-delete {
+  margin-left: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.section-delete:hover {
+  color: var(--danger);
+  background-color: rgba(239, 68, 68, 0.14);
 }
 
 .section-content {

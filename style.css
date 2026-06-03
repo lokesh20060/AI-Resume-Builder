@@ -134,11 +134,27 @@ textarea {
   max-width: 120px;
   margin-right: 14px;
   transition: transform 220ms ease, filter 220ms ease;
+  animation: logo-pulse 1.2s ease-out forwards;
 }
 
 .app-logo-img:hover {
   transform: translateY(-2px) scale(1.03);
   filter: drop-shadow(0 12px 24px rgba(14, 165, 233, 0.18));
+}
+
+@keyframes logo-pulse {
+  0% {
+    transform: translateY(0) scale(0.96);
+    opacity: 0.7;
+  }
+  60% {
+    transform: translateY(-4px) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .header-left > div {
